@@ -123,6 +123,11 @@ display(example_df)
 
 # COMMAND ----------
 
+# MAGIC %python
+# MAGIC print("heelo")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC # Create a Markdown Cell
@@ -131,6 +136,14 @@ display(example_df)
 # MAGIC * A header
 # MAGIC * Bullet points
 # MAGIC * A link (using your choice of HTML or Markdown conventions)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # header
+# MAGIC - bullet 
+# MAGIC 1. ordered
+# MAGIC - [aju](https://ajmalbinnizam.github.io)
 
 # COMMAND ----------
 
@@ -147,8 +160,27 @@ display(files)
 
 # COMMAND ----------
 
+files = dbutils.fs.ls("databricks-datasets/nyctaxi-with-zipcodes/subsampled/")
+display(files)
+
+# COMMAND ----------
+
+files = dbutils.fs.ls("./mnt/dbacademy-datasets/data-engineer-learning-path/v02/nyctaxi-with-zipcodes/data")
+display(files)
+
+# COMMAND ----------
+
+DA.paths.datasets
+
+# COMMAND ----------
+
+# MAGIC %sql 
+# MAGIC SELECT * from delta.`dbfs:/databricks-datasets/nyctaxi-with-zipcodes/subsampled/`
+
+# COMMAND ----------
+
 # MAGIC %sql
-# MAGIC SELECT * FROM delta.`${DA.paths.datasets}/nyctaxi-with-zipcodes/data`
+# MAGIC SELECT * FROM delta.`dbfs:/mnt/dbacademy-datasets/data-engineer-learning-path/v02/nyctaxi-with-zipcodes/data`
 
 # COMMAND ----------
 

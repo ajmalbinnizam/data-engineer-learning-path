@@ -57,7 +57,8 @@
 
 # COMMAND ----------
 
-print("I'm running Python!")
+# MAGIC %python
+# MAGIC print("I'm running Python!")
 
 # COMMAND ----------
 
@@ -101,6 +102,11 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC SELECT "im running sql"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC ## Magic Commands
@@ -128,7 +134,8 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
-print("Hello Python!")
+# MAGIC %python
+# MAGIC print("Hello Python!")
 
 # COMMAND ----------
 
@@ -173,9 +180,9 @@ print("Hello Python!")
 # MAGIC And of course, tables:
 # MAGIC 
 # MAGIC | name   | value |
-# MAGIC |--------|-------|
+# MAGIC |--------|------|
 # MAGIC | Yi     | 1     |
-# MAGIC | Ali    | 2     |
+# MAGIC | Ali    | 2    |
 # MAGIC | Selina | 3     |
 
 # COMMAND ----------
@@ -189,6 +196,10 @@ print("Hello Python!")
 
 # COMMAND ----------
 
+# MAGIC %run ./relative_notebook
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC Uncommenting and executing the following cell will generate the following error:<br/>
@@ -197,7 +208,7 @@ print("Hello Python!")
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC -- SELECT * FROM demo_tmp_vw
+# MAGIC SELECT * FROM demo_tmp_vw
 
 # COMMAND ----------
 
@@ -238,10 +249,11 @@ print("Hello Python!")
 
 # COMMAND ----------
 
-print(f"DA:                   {DA}")
-print(f"DA.username:          {DA.username}")
-print(f"DA.paths.working_dir: {DA.paths.working_dir}")
-print(f"DA.schema_name:       {DA.schema_name}")
+# MAGIC %python
+# MAGIC print(f"DA:                   {DA}")
+# MAGIC print(f"DA.username:          {DA.username}")
+# MAGIC print(f"DA.paths.working_dir: {DA.paths.working_dir}")
+# MAGIC print(f"DA.schema_name:       {DA.schema_name}")
 
 # COMMAND ----------
 
@@ -271,8 +283,9 @@ print(f"DA.schema_name:       {DA.schema_name}")
 
 # COMMAND ----------
 
-path = f"{DA.paths.datasets}"
-dbutils.fs.ls(path)
+# MAGIC %python
+# MAGIC path = f"{DA.paths.datasets}"
+# MAGIC dbutils.fs.ls(path)
 
 # COMMAND ----------
 
@@ -289,8 +302,14 @@ dbutils.fs.ls(path)
 # COMMAND ----------
 
 path = f"{DA.paths.datasets}"
-files = dbutils.fs.ls(path)
-display(files)
+print(path)
+
+# COMMAND ----------
+
+# MAGIC %python
+# MAGIC path = f"{DA.paths.datasets}"
+# MAGIC files = dbutils.fs.ls(path)
+# MAGIC display(files)
 
 # COMMAND ----------
 
@@ -367,7 +386,8 @@ display(files)
 
 # COMMAND ----------
 
-DA.cleanup()
+# MAGIC %python
+# MAGIC DA.cleanup()
 
 # COMMAND ----------
 
