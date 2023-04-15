@@ -1,4 +1,8 @@
 # Databricks notebook source
+import sql 
+
+# COMMAND ----------
+
 for i in range(10):
     print("you got this")
 
