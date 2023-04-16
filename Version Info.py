@@ -65,7 +65,7 @@
 
 # MAGIC %md ### Cannot Install Libraries
 # MAGIC 
-# MAGIC Databricks Academy provides custom libraries to facilitate the development of its courseware. Your cluster requires access to these remotely hosted libraries so that they can be installed into your cluster.
+# MAGIC Databricks Academy provides custom libraries for the development of its courseware. Your cluster requires access to these remotely hosted libraries so that they can be installed into your cluster.
 # MAGIC 
 # MAGIC Various companies restrict access to external sites to limit data exfiltration and address other security concerns, such as leaking potentially sensitive or proprietary information.
 # MAGIC 
