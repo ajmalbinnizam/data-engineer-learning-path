@@ -101,6 +101,10 @@ print(my_name)
 
 # COMMAND ----------
 
+display(spark.range(100))
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC ## Run a Python cell
