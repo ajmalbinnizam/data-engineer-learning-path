@@ -1,0 +1,8 @@
+$(document).ready(function() {
+    if ( ($("#privacychoices").length > 0) &&
+         ($("#privacychoices").attr('href') === undefined) ) {
+        // We have a footer with the privacy choices. Convert it to a link.
+
+        $("#privacychoices").attr('href', 'javascript:OneTrust.ToggleInfoDisplay()');
+    }
+});
