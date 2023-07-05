@@ -26,3 +26,7 @@ my_name = 'aju'
 
 example_df = spark.range(16)
 
+
+# COMMAND ----------
+
+
