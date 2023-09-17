@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md-sandbox
--- MAGIC 
+-- MAGIC
 -- MAGIC <div style="text-align: center; line-height: 0; padding-top: 9px;">
 -- MAGIC   <img src="https://databricks.com/wp-content/uploads/2018/03/db-academy-rgb-1200px.png" alt="Databricks Learning" style="width: 600px">
 -- MAGIC </div>
@@ -8,14 +8,14 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC
+-- MAGIC
 -- MAGIC # Reshaping Data Lab
--- MAGIC 
+-- MAGIC
 -- MAGIC In this lab, you will create a **`clickpaths`** table that aggregates the number of times each user took a particular action in **`events`** and then join this information with a flattened view of **`transactions`** to create a record of each user's actions and final purchases.
--- MAGIC 
+-- MAGIC
 -- MAGIC The **`clickpaths`** table should contain all the fields from **`transactions`**, as well as a count of every **`event_name`** from **`events`** in its own column. This table should contain a single row for each user that completed a purchase.
--- MAGIC 
+-- MAGIC
 -- MAGIC ## Learning Objectives
 -- MAGIC By the end of this lab, you should be able to:
 -- MAGIC - Pivot and join tables to create clickpaths for each user
@@ -23,10 +23,10 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
--- MAGIC 
+-- MAGIC
+-- MAGIC
 -- MAGIC ## Run Setup
--- MAGIC 
+-- MAGIC
 -- MAGIC The setup script will create the data and declare necessary values for the rest of this notebook to execute.
 
 -- COMMAND ----------
@@ -36,9 +36,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
--- MAGIC 
--- MAGIC 
+-- MAGIC
+-- MAGIC
+-- MAGIC
 -- MAGIC We'll use Python to run checks occasionally throughout the lab. The helper functions below will return an error with a message on what needs to change if you have not followed instructions. No output means that you have completed this step.
 
 -- COMMAND ----------
@@ -51,14 +51,22 @@
 
 -- COMMAND ----------
 
+select * from events
+
+-- COMMAND ----------
+
+
+
+-- COMMAND ----------
+
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC ## Pivot events to get event counts for each user
--- MAGIC 
+-- MAGIC
 -- MAGIC Let's start by pivoting the **`events`** table to get counts for each **`event_name`**.
--- MAGIC 
+-- MAGIC
 -- MAGIC We want to aggregate the number of times each user performed a specific event, specified in the **`event_name`** column. To do this, group by **`user_id`** and pivot on **`event_name`** to provide a count of every event type in its own column, resulting in the schema below. Note that **`user_id`** is renamed to **`user`** in the target schema.
--- MAGIC 
+-- MAGIC
 -- MAGIC | field | type | 
 -- MAGIC | --- | --- | 
 -- MAGIC | user | STRING |
@@ -85,7 +93,7 @@
 -- MAGIC | original | BIGINT |
 -- MAGIC | delivery | BIGINT |
 -- MAGIC | premium | BIGINT |
--- MAGIC 
+-- MAGIC
 -- MAGIC A list of the event names are provided in the TODO cells below.
 
 -- COMMAND ----------
@@ -94,12 +102,26 @@
 
 -- COMMAND ----------
 
+
+
+-- COMMAND ----------
+
 -- TODO
-CREATE OR REPLACE TEMP VIEW events_pivot
-<FILL_IN>
+CREATE OR REPLACE TEMP VIEW events_pivot as
+select * from (SELECT user_id user, event_name FROM events)
+PIVOT (
+  count(*) FOR event_name IN 
 ("cart", "pillows", "login", "main", "careers", "guest", "faq", "down", "warranty", "finalize", 
 "register", "shipping_info", "checkout", "mattresses", "add_item", "press", "email_coupon", 
-"cc_info", "foam", "reviews", "original", "delivery", "premium")
+"cc_info", "foam", "reviews", "original", "delivery", "premium"))
+
+
+-- select * from events_pivot
+
+
+-- COMMAND ----------
+
+select * from events_pivot
 
 -- COMMAND ----------
 
@@ -109,14 +131,15 @@ CREATE OR REPLACE TEMP VIEW events_pivot
 
 -- MAGIC %python
 -- MAGIC # TODO
--- MAGIC (spark.read
--- MAGIC     <FILL_IN>
--- MAGIC     .createOrReplaceTempView("events_pivot"))
+-- MAGIC events_pivot_df = (spark.read.table("events").groupBy('user_id')
+-- MAGIC   .pivot('event_name').count()
+-- MAGIC   .withColumnRenamed("user_id", 'user')
+-- MAGIC   .createOrReplaceTempView("events_pivot"))
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC ### Check your work
 -- MAGIC Run the cell below to confirm the view was created correctly.
 
@@ -127,14 +150,18 @@ CREATE OR REPLACE TEMP VIEW events_pivot
 
 -- COMMAND ----------
 
+select * from transactions 
+
+-- COMMAND ----------
+
 -- MAGIC %md
--- MAGIC 
--- MAGIC 
--- MAGIC 
+-- MAGIC
+-- MAGIC
+-- MAGIC
 -- MAGIC ## Join event counts and transactions for all users
--- MAGIC 
+-- MAGIC
 -- MAGIC Next, join **`events_pivot`** with **`transactions`** to create the table **`clickpaths`**. This table should have the same event name columns from the **`events_pivot`** table created above, followed by columns from the **`transactions`** table, as shown below.
--- MAGIC 
+-- MAGIC
 -- MAGIC | field | type | 
 -- MAGIC | --- | --- | 
 -- MAGIC | user | STRING |
@@ -167,7 +194,14 @@ CREATE OR REPLACE TEMP VIEW events_pivot
 
 -- TODO
 CREATE OR REPLACE TEMP VIEW clickpaths AS
-<FILL_IN>
+
+
+SELECT * 
+FROM events_pivot a
+INNER JOIN transactions b
+ON a.user = b.user_id;
+
+SELECT * FROM clickpaths
 
 -- COMMAND ----------
 
@@ -177,14 +211,19 @@ CREATE OR REPLACE TEMP VIEW clickpaths AS
 
 -- MAGIC %python
 -- MAGIC # TODO
--- MAGIC (spark.read
--- MAGIC     <FILL_IN>
--- MAGIC     .createOrReplaceTempView("clickpaths"))
+-- MAGIC transactions_df = spark.read.table("transactions")
+-- MAGIC events_pivot_df = spark.read.table("events_pivot")
+-- MAGIC
+-- MAGIC # Join the two DataFrames
+-- MAGIC clickpaths_df = events_pivot_df.join(transactions_df, events_pivot_df.user == transactions_df.user_id, "inner")
+-- MAGIC     
+-- MAGIC # Create or replace a temp view
+-- MAGIC clickpaths_df.createOrReplaceTempView("clickpaths")
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC ### Check your work
 -- MAGIC Run the cell below to confirm the view was created correctly.
 
@@ -196,7 +235,7 @@ CREATE OR REPLACE TEMP VIEW clickpaths AS
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC  
 -- MAGIC Run the following cell to delete the tables and files associated with this lesson.
 
