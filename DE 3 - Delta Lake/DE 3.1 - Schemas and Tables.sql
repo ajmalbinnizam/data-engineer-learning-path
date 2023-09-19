@@ -108,8 +108,7 @@ DESCRIBE DETAIL managed_table;
 -- MAGIC tbl_location = spark.sql(f"DESCRIBE DETAIL managed_table").first().location
 -- MAGIC print(tbl_location)
 -- MAGIC
--- MAGIC files = dbutils.fs.ls(tbl_location)
--- MAGIC display(files)
+-- MAGIC display(dbutils.fs.ls(tbl_location))
 
 -- COMMAND ----------
 
@@ -216,7 +215,7 @@ DROP SCHEMA ${da.schema_name}_default_location CASCADE;
 -- COMMAND ----------
 
 -- MAGIC %python 
--- MAGIC # DA.cleanup()
+-- MAGIC DA.cleanup()
 
 -- COMMAND ----------
 
