@@ -1,0 +1,25 @@
+How to set the date in databricks through parameters?
+Dbutils.widget.text("dt")
+date = dbutils.widget.get("dt")
+
+Delta lake drop table will remove the table from catalog and data will be deleted.
+
+query given, all the new data should be saved in the table, which query is optimal when cost is concern? -> Append
+
+_NoAfter running a nightly job , team wants to find out the difference between previous data and current dataset -> change data feed
+
+presented with a view . which statement is true -> it will execute in query time and will return result at the time query finishes.
+
+Which tool will be useful for persing log4j log -> regex
+
+cluster privilages, cluster set up, Databricks sql dashboard- refresh rate,what query to set, databricks repo, difference between DBFS root storage and external object storage, cross language behavior in databricks notebook, Anatomy of delta query - delta log(min and max statistics), deep clone vs shallow clone, Merge into vs Union All , Auto loader, Change data feed, 
+
+Streaming -> static-stream join, stream-stream join, kafka, Watermarking, Various triggers (trigger once, continuous, available now, processing time) , windowing in streaming(tumbling window, sliding window , session window), Spark Ui(where to look for physical plan, where to look for predicate push down) and Gaglia API.
+
+
+Delta - Auto optimize, Auto compaction, merge, cloning, optimize vs Auto Optimize , Delta log, describe(Extende vs formatted ), Explain, Describe vs summary,
+
+Notebook -> % command, Dbutils command, 
+
+
+Databricks API question -> Jobs APi, Task Api and muti-task API.
